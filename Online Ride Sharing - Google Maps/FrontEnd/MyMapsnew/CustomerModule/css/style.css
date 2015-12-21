@@ -1,0 +1,23 @@
+html, body,#sec{
+    height: 93%;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#map{
+ height: 93%;
+ width: 75%;
+}
+#sideSec{
+  height: 93%;
+  width:25%;
+  color:black;
+  background-color:#eeeeee;
+  background-image: url('http://i.dailymail.co.uk/i/pix/2014/04/24/article-2611974-1D4F9CDF00000578-738_964x504.jpg');
+  background-image: url(papers4.png);
+    <!--http://i.dailymail.co.uk/i/pix/2014/04/24/article-2611974-1D4F9CDF00000578-738_964x504.jpg-->
+}
+#header
+{
+color:#0000FF;
+}

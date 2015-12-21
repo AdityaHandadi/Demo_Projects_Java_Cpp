@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Register</title>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='http://fonts.googleapis.com/css?family=Orbitron|Quantico' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="assets/css/bootstrap-theme.min.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script>
+    
+	function validateform(){  
+        var name=document.myform.fname.value;  
+        var password=document.myform.password.value;  
+
+         if( document.myForm.fname.value == "" )
+         {
+            alert( "Please provide your name!" );
+            document.myForm.Name.focus() ;
+            return false;
+         }
+        
+        /*var firstpassword=document.f1.password.value;
+        var secondpassword=document.f1.password2.value;
+
+        if (name==null || name==""){  
+            alert("Name can't be blank");  
+            return false;  
+        }else if(password.length<6){  
+            alert("Password must be at least 6 characters long.");  
+            return false;  
+        }  */
+
+	}  
+    
+    function sendRegJson(){
+        var fname=document.myform.fname.value;  
+        var lname=document.myform.lname.value;  
+	    var password=document.myform.password.value;  
+        
+        var email = document.myform.email.value;
+        var userType = document.myform.type.value;
+        
+        var regData = {
+            "fname":fname,
+            "lname":lname,
+            "password": password,
+            "email": email,
+            "userType": userType
+        }
+        
+        var jsonData = JSON.stringify(regData);
+        console.log(jsonData);
+        
+        var request = $.ajax({
+          url: 'http://localhost:8080/TestWs1/rest/regservice/register',
+          type: 'POST',
+          data:jsonData,
+          headers: { 
+            'Accept': 'application/json',
+            'Content-Type': 'application/json' 
+          },
+          dataType: 'json',
+		  complete: function(response) {
+              if(response.responseText == 'success'){
+                alert('Registration Success');
+                sendRegisterEmail(email);
+              }
+              else if(response.responseText == 'emailExist'){
+                alert('Email is already in use, Please Register with different email, or login in with existing');
+              }
+              else if(response.responseText == 'noemail'){
+                alert('Please enter valid email');
+              }
+              else if(response.responseText == 'fail'){
+                alert('registration failed');
+              }
+          }
+          
+        }); 
+    }
+	
+			function sendRegisterEmail(email)
+			{
+				$.ajax({
+					type: "POST",
+					url: "https://mandrillapp.com/api/1.0/messages/send.json",
+					data: {
+						'key': 'BLRIwwbepHVLvQ5NlUzYKw',
+						'message': {
+							'from_email': 'OnlineRideShare@gmail.com',
+				  'to': [
+					  {
+						'email': email,
+						'name': 'RECIPIENT NAME (OPTIONAL)',
+						'type': 'to'
+					  },
+					 ],
+				  'autotext': 'true',
+				  'subject': 'Registration Successfull',
+				  'html': 'Thanks for choosing OnlineRideSharingService, your registration is successfull. You may proceed with login now.' 
+				}
+			  }
+			  }).done(function(response) {
+			   //alert("Registration Successful ");
+                location.href = 'index.html';
+			   console.log(response); // if you're into that sorta thing
+			 });
+		
+			}	
+		
+</script>
+<style>
+        body{
+            background-color: rgba(81, 105, 67, 0.84);
+            color: #ffffff;
+        }
+        .register{
+            margin-top: 20px;
+        }
+        input{
+            margin-bottom: 20px;
+        }
+        label{padding-left: 0!important;}
+        .module-ride-share-registration{
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+        .radio-inline{padding-left: 20px!important;}
+    </style>
+</head>
+
+<body>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!--
+	<form name="myform" >  
+		<table>
+		<tr>  Please fill in the details to register</tr>
+		<tr><td>	First Name: </td><td><input type="text" name="fname" id="fname"></td></tr>
+		<tr><td>	Last Name: </td><td><input type="text" name="lname" id="lname"></td></tr>
+		<tr><td>	Email: </td><td><input type="text" name="email" id="email"></td></tr>
+		<tr><td>	Password:</td><td> <input type="password" name="password"></td></tr>
+		<tr><td>	Re-enter Password:</td><td><input type="password" name="password2"/></td></tr>
+		<tr><td>	<input type="radio" name="type" value="ride">Ride</td> <td>	<input type="radio" name="type"      value="customer">Customer</td></tr>
+		<tr><td>	<input type="button" value="register" onclick="sendRegJson()"></td><td></td></tr>  
+		</table>
+	</form> -->
+    
+    
+
+<div class="container module-ride-share-registration">
+    <div class="row">
+<form name="myform">
+    <h3>Please fill in the details to register</h3>
+    <div class="form-group">
+        <label for="fname" class="col-md-2 col-lg-2" required >First Name:</label>
+        <input type="text" class="form-control col-md-4 col-lg-4" id="fname" placeholder="First name">
+    </div>
+    <div class="form-group">
+        <label for="lname" class="col-md-2 col-lg-2">Last name</label>
+        <input type="text" class="form-control col-md-4 col-lg-4" id="lname" placeholder="Last name">
+    </div>
+    <div class="form-group">
+        <label for="email" class="col-md-2 col-lg-2">Email</label>
+        <input type="email" id="email" class="form-control col-md-4 col-lg-4" placeholder="Email">
+    </div>
+      <div class="form-group">
+        <label for="password" class="col-md-2 col-lg-2">Password</label>
+        <input type="password" id="password" class="form-control col-md-4 col-lg-4" placeholder="Password" >
+    </div>
+      <div class="form-group">
+        <label for="password2" class="col-md-2 col-lg-2">Re-enter password:</label>
+        <input type="password" id="password2" class="form-control col-md-4 col-lg-4" placeholder="Re-enter password">
+    </div>
+<div class="col-md-4 col-lg-4 type-radio">
+    <label class="radio-inline">
+        <input type="radio" name="type" id="rider" value="ride"> Ride
+    </label>
+    <label class="radio-inline">
+        <input type="radio" name="type" id="customer" value="customer"> Customer
+    </label>
+</div>
+    <button type="button" value="Register" class="btn btn-primary col-md-2 col-lg-2 register" onclick="sendRegJson()">Register</button>
+<div>
+    <button type="button" value="Home" class="btn btn-primary col-md-2 col-lg-2 register" onclick="location.href = 'index.html'">Home</button>
+</div>
+</form>
+        </div>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Home</title>
+
+<style>
+	body{
+	background-color: ivory;
+	}
+	#side1 {
+		top: 50%;
+		margin-top: 200px;
+		margin-left:50px;
+		height:300px;	
+		width:500px;
+		float:left;    
+		padding:10px;
+	}
+	#side2{
+		margin-top: 200px;
+		height:300px;
+		width:400px;
+		float:left;
+		padding:10px;
+	}
+	#side3 {
+		margin-top: 200px;
+		height:300px;
+		width:300px;
+		float:left;
+	}
+	input {
+    width: 100%;
+	}
+</style>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script> 
+    function validateCustCreds(){
+        var loginid = document.custForm.custEmailId.value;
+        var pwd = document.custForm.custPwd.value; 
+        
+        var custCreds = {
+            "loginId":loginid,
+            "password":pwd
+        }
+          
+        var jsonData = JSON.stringify(custCreds);
+        console.log(jsonData);
+        
+        var msg = '';
+        
+        var request = $.ajax({
+          url: 'http://localhost:8080/TestWs1/rest/loginservice/login',
+          type: 'POST',
+          data:jsonData,
+          headers: { 
+            'Accept': 'application/json',
+            'Content-Type': 'application/json' 
+          },
+          dataType: 'json',
+          //accepts: "application/json; charset=utf-8",
+          complete: function (response) {
+              //msg = response.responseText;
+              if(response.responseText == 'success'){
+                alert('login success');
+                localStorage.custEmail = loginid;
+                location.href = 'CustomerModule/custhome.html';
+              }
+              else
+                alert('login failed');
+          }
+            
+        }); 
+        
+    }
+    
+    function validateRideCreds(){
+        var loginid = document.rideForm.rideEmailId.value;
+        var pwd = document.rideForm.ridePwd.value;
+        
+        var rideCreds = {
+            "loginId":loginid,
+            "password":pwd
+          }
+        var jsonData = JSON.stringify(rideCreds);
+        console.log(jsonData);
+        
+        var msg = '';
+        
+        var request = $.ajax({
+          url: 'http://localhost:8080/TestWs1/rest/loginservice/login',
+          type: 'POST',
+          data:jsonData,
+          headers: { 
+            'Accept': 'application/json',
+            'Content-Type': 'application/json' 
+          },
+          dataType: 'json',
+          //accepts: "application/json; charset=utf-8",
+          complete: function (response) {
+               if(response.responseText == 'success'){
+                	alert('login success');
+                    localStorage.rideEmail = loginid;
+					location.href = 'RideModule/ridehome.html';
+                }
+               else
+                alert('login failed');
+          }
+          
+            
+        });
+		}
+    
+    
+</script>
+
+</head>
+    
+
+<body>
+    
+	<div id="side1">
+        <h3>Customer Login</h3>
+        <form name="custForm" >
+            <table>
+            <tr><td>LoginId:</td>	<td><input type="text" value="" id="custEmailId"> </td></tr> 
+            <tr><td>Password:</td>	<td><input type="password" value="" id="custPwd"></td> </tr>
+            <tr><td><input type="button" value="Login" onclick="validateCustCreds()"></td><td></td></tr>
+		    </table>
+        </form>
+    </div>
+	
+    
+	<div id="side2">
+		<h3>Register Me</h3>
+		<table>
+		<td><input type="submit" value="Register" onclick="location.href = 'registration.html';"></br></td><td></td>
+		</table>
+	</div>
+    
+	<div id="side3">
+        <h3>Ride Login</h3>
+        <form  name="rideForm" >  
+            <table>
+            <tr><td>LoginId: </td>	<td><input type="text" name="" id="rideEmailId"></td></tr>	
+            <tr><td>Password: </td>	<td><input type="password" name="" id="ridePwd"></td></tr>	  
+            <tr><td><input type="button" value="Login" onclick="validateRideCreds()"> </td><td></td></tr> 
+            </table>
+        </form>
+    </div>
+	
+</body>
+</html>

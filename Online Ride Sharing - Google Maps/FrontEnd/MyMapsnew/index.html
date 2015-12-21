@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Riding Sharing App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='http://fonts.googleapis.com/css?family=Orbitron|Quantico' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="assets/css/bootstrap-theme.min.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    <script>
+        function validateCustCreds(){
+            var loginid = document.custForm.custEmailId.value;
+            var pwd = document.custForm.custPwd.value;
+
+            var custCreds = {
+                "loginId":loginid,
+                "password":pwd
+            }
+
+            var jsonData = JSON.stringify(custCreds);
+            console.log(jsonData);
+
+            var msg = '';
+
+            var request = $.ajax({
+                url: 'http://localhost:8080/TestWs1/rest/loginservice/login',
+                type: 'POST',
+                data:jsonData,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                dataType: 'json',
+                //accepts: "application/json; charset=utf-8",
+                complete: function (response) {
+                    //msg = response.responseText;
+                    if(response.responseText == 'success'){
+                        //alert('login success');
+                        localStorage.custEmail = loginid;
+                        location.href = 'CustomerModule/custhome.html';
+                    }
+                    else
+                        alert('login failed');
+                }
+            });
+
+        }
+
+        function validateRideCreds(){
+            var loginid = document.rideForm.rideEmailId.value;
+            var pwd = document.rideForm.ridePwd.value;
+
+            var rideCreds = {
+                "loginId":loginid,
+                "password":pwd
+            }
+            var jsonData = JSON.stringify(rideCreds);
+            console.log(jsonData);
+
+            var msg = '';
+
+            var request = $.ajax({
+                url: 'http://localhost:8080/TestWs1/rest/loginservice/login',
+                type: 'POST',
+                data:jsonData,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                dataType: 'json',
+                //accepts: "application/json; charset=utf-8",
+                complete: function (response) {
+                    if(response.responseText == 'success'){
+                        //alert('login success');
+                        localStorage.rideEmail = loginid;
+                        location.href = 'RideModule/ridehome.html';
+                    }
+                    else
+                        alert('login failed');
+                }
+
+
+            });
+        }
+        
+        function validateAdminCred(){
+            //do nothing
+            var loginid = document.adminForm.adminEmailId.value;
+            var pwd = document.adminForm.adminPwd.value;
+
+            var rideCreds = {
+                "loginId":loginid,
+                "password":pwd
+            }
+            var jsonData = JSON.stringify(rideCreds);
+            console.log(jsonData);
+
+            var msg = '';
+
+            var request = $.ajax({
+                url: 'http://localhost:8080/TestWs1/rest/loginservice/admin',
+                type: 'POST',
+                data:jsonData,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                dataType: 'json',
+                //accepts: "application/json; charset=utf-8",
+                complete: function (response) {
+                    if(response.responseText == 'success'){
+                        //alert('login success');
+                        localStorage.rideEmail = loginid;
+                        location.href = 'admin.html';
+                    }
+                    else
+                        alert('login failed');
+                }
+
+
+            });
+        }
+
+    </script>
+
+<style>
+   body{
+        background-color: rgba(0, 0, 0, 0.84);
+        color: #ffffff;
+        background-image: url('http://helenebrunet.com/wp-content/uploads/2014/04/Streets-Night-City-Lights.jpg');
+        background-image: url(Background.png);
+    }
+    .module-ride-share .header{
+      text-align: center;
+        color: #00FFC4;
+        font-family: 'Orbitron', sans-serif;
+        letter-spacing: 10px;
+    }
+.member-login, .rider-login, .admin {
+    margin-top: 30px;
+    font-family: 'Quantico', sans-serif;
+    letter-spacing: 10px;
+}
+.register {
+    font-family: 'Quantico', sans-serif;
+    letter-spacing: 10px;
+}
+  .module-ride-share button{
+    background-color: #07B679;
+    font-size: 30px;
+}
+  .module-ride-share button{
+    background-color: #07B679;
+    font-size: 30px;
+}
+    .module-ride-share a{color: #ffffff;}
+    .module-ride-share a:hover{text-decoration: none;}
+    .module-ride-share button:hover{
+        box-shadow: inset 2px 0px 29px 0px #0F0F0E;
+    }
+     .modal-contents{
+        margin-left: 90px;
+    }
+    .modal-contents .close{
+        font-size: 45px;
+        opacity: 0.7;
+        position: relative;
+        top: -45px;
+    }
+    .modal-contents .close:hover{
+        opacity: 1;
+    }
+     .modal-contents .btn-success{
+        margin-left: 20px;
+    }
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        z-index: 9700;
+        background: rgba(0,0,0,.35);
+        color: #333;
+    }
+    @media only screen and (max-width: 979px) {
+        .modal {
+            max-width: 88% !important;
+            top: 1% !important;
+            max-height: 82%;
+            padding: 40px 5% 2% 5%;
+            -webkit-overflow-scrolling: touch;
+
+        }
+    }
+    @media only screen and (max-width: 768px) {
+        .modal-contents{
+            margin-left: 0;
+        }
+        .close{left: 25px;}
+    }
+        .modal {
+            position: relative;
+            display: none;
+            margin: 0 auto;
+            width: 550px;
+            max-height: 480px;
+            overflow-y: auto;
+            padding: 30px 40px 60px 40px;
+            background: #EEE;
+            background-image: -webkit-linear-gradient(top,#F8F8F8 0,#EEE 100%);
+            background-image: -moz-linear-gradient(top,#F8F8F8 0,#EEE 100%);
+            background-image: -ms-linear-gradient(top,#F8F8F8 0,#EEE 100%);
+            background-image: -o-linear-gradient(top,#F8F8F8 0,#EEE 100%);
+            background-image: linear-gradient(top,#F8F8F8 0,#EEE 100%);
+            -webkit-box-shadow: 0 0 15px rgba(0,0,0,.35);
+            -moz-box-shadow: 0 0 15px rgba(0,0,0,.35);
+            box-shadow: 0 0 15px rgba(0,0,0,.35);
+        }
+    input[ type=email ] {
+        border-width: 2px;
+    }
+    input[ type=email ]:focus:invalid {
+         border-color: #a94442;
+         -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+         box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+         color: #a94442;
+     }
+    input[ type=email ]:valid {
+        border-color: #3c763d;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        color: #3c763d;
+    }
+    .signup-text{
+    	text-align: center;
+    }
+    .signup-text p{
+    	margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+<div class="container-fluid module-ride-share">
+    <div class="row">
+        <div id="share-ride-container">
+            <div class="header"><h1>Online Ride Services</h1></div>
+            <div class="col-sm-4 col-md-offset-4 col-sm-offset-4 member-login">
+                <button type="button" data-modalLink="" data-formname="custForm" data-customerid="custEmailId"
+                        data-passwordid="custPwd" data-function="validateCustCreds()" class="btn btn-lg btn-block">Customer Log In</button>
+
+
+            </div>
+            <div class="col-sm-4 col-md-offset-4 col-sm-offset-4 rider-login">
+                    <button type="button" data-modalLink="" data-formname="rideForm" data-customerid="rideEmailId"
+                            data-passwordid="ridePwd" data-function="validateRideCreds()"
+                            class="btn btn-lg btn-block">Ride Log In</button>
+            </div>
+            <div class="col-sm-4 col-md-offset-4 col-sm-offset-4 signup-text">
+            <p>Don't have an account?</p>
+            </div>
+            <div class="col-sm-4 col-md-offset-4 col-sm-offset-4 register">
+                <a href="registration.html"><button type="button" class="btn btn-lg btn-block">Register</button></a>
+            </div>
+            <div class="col-sm-4 col-md-offset-4 col-sm-offset-4 admin">
+                <button type="button" data-modalLink="" data-formname="adminForm" data-customerid="adminEmailId"
+                        data-passwordid="adminPwd" data-function="validateAdminCred()" class="btn btn-lg btn-block">Admin Log In</button>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="overlay" id="overlayContainer">
+    <div class="modal" id="login-popup">
+        <div class="modal-contents">
+        <h2 id="modal-title"></h2>
+            <form name="">
+            <button type="button" class="close" data-close-modal="" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+            <label for="" class="">User Id<br/>
+        <input type="email" data-userid="" class="form-control" value="" id="" placeholder="Email Id" required>
+        </label><br/>
+        <label for="" class="">Password<br/>
+            <input type="password" data-passwordid="" class="form-control" value="" id="" placeholder="password">
+        </label>
+        <br/><br/>
+        <button type="button" class="btn btn-danger">Forgot Password</button>
+        <button type="button" class="btn btn-success" onclick="" id="signIn">Sign In</button>
+                </form>
+    </div>
+        </div>
+</div>
+
+<script>
+    $(function() {
+        var $overlay = $('#overlayContainer');
+        var $modal = $overlay.find('#login-popup');
+        $('[data-modalLink]').on('click',function(){
+               var $this = $(this);
+                var heading =$this.html();
+                var formName = $this.data('formname');
+                var userId= $this.data('customerid');
+                var passwordId = $this.data('passwordid');
+                var triggerFunction = $this.data('function');
+                displayModal(heading, formName, userId, passwordId, triggerFunction);
+            return false;
+        });
+
+        $('[data-close-modal]').on('click', function(){
+            hideModal();
+            return false;
+        });
+
+        function displayModal(heading, formName, userId, passwordId, triggerFunction){
+            $modal.find('#modal-title').html(heading);
+            $modal.find('form').attr("name", formName);
+            $modal.find('[data-userid]').attr('id',userId);
+            $modal.find('[data-userid]').parent().attr('for',userId);
+            $modal.find('[data-passwordid]').attr('name',passwordId);
+            $('#signIn').attr('onclick',triggerFunction);
+
+
+            $modal.css({display: "block"});
+            $overlay.fadeIn('normal', function () {
+
+                var winHeight = $(window).height();
+                $modal.animate({'top': (winHeight - $modal.outerHeight()) / 2}, 150);
+            });
+        };
+        function hideModal(){
+            $overlay.css({display: "none"});
+            $modal.css({display: "none"});
+        };
+
+        $(document).on('keyup',function(evt) {
+            if (evt.keyCode == 27) {
+                hideModal();
+                return false;
+            }
+        });
+
+
+    });
+
+</script>
+</body>
+</html>

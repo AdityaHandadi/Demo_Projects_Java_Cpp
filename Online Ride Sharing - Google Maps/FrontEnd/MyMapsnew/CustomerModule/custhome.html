@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        
+        <title>Google Maps API</title>
+		<!-- StyleSheets -->
+        <style>
+		#header{
+			background-color:#0000FF;
+            background-image: url('http://helenebrunet.com/wp-content/uploads/2014/04/Streets-Night-City-Lights.jpg');
+            background-image: url(papers3.png);
+		}
+		table{
+		color:white;
+		}
+		tr{
+		width=23px;
+		}
+		#1,#3,#5{
+		position: initial;
+		visibility:hidden;
+		}
+		#2,#4,#6
+		{
+		position:initial;
+		visibility:hidden;
+		width=23px;
+		}
+		#alert{
+		position: absolute;
+		right:80px;
+		top:25px;
+		float:right;
+		}
+		#routebutton{
+		margin-left:10%;
+		}
+        .myButton {
+                    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #b2c6e8), color-stop(1, #476e9e));
+                    background:-moz-linear-gradient(top, #b2c6e8 5%, #476e9e 100%);
+                    background:-webkit-linear-gradient(top, #b2c6e8 5%, #476e9e 100%);
+                    background:-o-linear-gradient(top, #b2c6e8 5%, #476e9e 100%);
+                    background:-ms-linear-gradient(top, #b2c6e8 5%, #476e9e 100%);
+                    background:linear-gradient(to bottom, #b2c6e8 5%, #476e9e 100%);
+                    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#b2c6e8', endColorstr='#476e9e',GradientType=0);
+                    background-color:#b2c6e8;
+                    -moz-border-radius:6px;
+                    -webkit-border-radius:6px;
+                    border-radius:6px;
+                    border:1px solid #4e6096;
+                    display:inline-block;
+                    cursor:pointer;
+                    color:#ffffff;
+                    font-family:Arial;
+                    font-size:14px;
+                    font-weight:bold;
+                    padding:2px 10px;
+                    text-decoration:none;
+                    text-shadow:0px 1px 0px #283966;
+            }
+        .myButton:hover {
+                    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #476e9e), color-stop(1, #b2c6e8));
+                    background:-moz-linear-gradient(top, #476e9e 5%, #b2c6e8 100%);
+                    background:-webkit-linear-gradient(top, #476e9e 5%, #b2c6e8 100%);
+                    background:-o-linear-gradient(top, #476e9e 5%, #b2c6e8 100%);
+                    background:-ms-linear-gradient(top, #476e9e 5%, #b2c6e8 100%);
+                    background:linear-gradient(to bottom, #476e9e 5%, #b2c6e8 100%);
+                    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#476e9e', endColorstr='#b2c6e8',GradientType=0);
+                    background-color:#476e9e;
+            }
+        .myButton:active {
+                    position:relative;
+                    top:1px;
+            }
+        .css-input { border-color:#cccccc; border-style:solid; font-size:12px; padding:3px; border-width:1px;  } 
+        .css-input:focus { outline:none; } 
+                /* Double Border */
+        .tb6 {
+                    border: 3px double #CCCCCC;font-size:13px; 
+                    width: 180px;
+            }
+        .tb6:focus { outline:none; } 
+        .spanstyle{
+                    float:right;
+                    margin: -103px 0px 0px 306px;
+                    position: absolute;
+            }
+        .para {
+                    font-family: Verdana, Geneva, sans-serif;
+                    font-size: 14px;
+                    font-style: normal;
+                    font-variant: normal;
+                    font-weight: 200;
+                    line-height: 0px;
+                    text-align: right;
+          }
+        .para2 {
+                    font-family: Verdana, Geneva, sans-serif;
+                    font-size: 28px;
+                    font-style: normal;
+                    font-variant: normal;
+                    font-weight: 200;
+                    line-height: 0px;
+                    text-align: center;
+                    color: azure;
+          }
+        .bod {
+                    font-family: Verdana, Geneva, sans-serif;
+                    font-size: 16px;
+                    font-style: normal;
+                    font-variant: normal;
+                    font-weight: 200;
+                    line-height: 0px;
+                    text-align: right;
+                    text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
+                    color:darkblue
+            }
+        .selectopt{
+                    font-family: Verdana, Geneva, sans-serif;
+                    font-size: 12px;
+        }		
+		</style>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>	   
+		<script>
+			$(document).ready(function(){
+				$('#alert').click(function() {
+				$.ajax({
+					type: "POST",
+					url: "https://mandrillapp.com/api/1.0/messages/send.json",
+					data: {
+						'key': 'BLRIwwbepHVLvQ5NlUzYKw',
+						'message': {
+							'from_email': 'OnlineRideShare@gmail.com',
+				  'to': [
+					  {
+						'email': 'phadithya@gmail.com',
+						'name': 'RECIPIENT NAME (OPTIONAL)',
+						'type': 'to'
+					  },
+					 ],
+				  'autotext': 'true',
+				  'subject': 'EMERGENCY ALERT NOTIFICATION!',
+				  'html': 'Passenger '+ localStorage.custEmail +' has requested for emergency. Passenger is location '+emergency()
+				}
+			  }
+			  }).done(function(response) {
+			   alert("EMERGENCY NOTIFICATION SENT");
+			   console.log(response); // if you're into that sorta thing
+			 });
+				});
+			});
+			
+			function sendbookingEmail(email_,datetime,csource,cdistance)
+			{
+				$.ajax({
+					type: "POST",
+					url: "https://mandrillapp.com/api/1.0/messages/send.json",
+					data: {
+						'key': 'BLRIwwbepHVLvQ5NlUzYKw',
+						'message': {
+							'from_email': 'OnlineRideShare@gmail.com',
+				  'to': [
+					  {
+						'email': email_,
+						'name': 'RECIPIENT NAME (OPTIONAL)',
+						'type': 'to'
+					  },
+					 ],
+				  'autotext': 'true',
+				  'subject': 'Booking Confirmation',
+				  'html': 'Your ride has been booked from '+ csource + 'to destination ' +cdistance+' on '+datetime 
+				}
+			  }
+			  }).done(function(response) {
+			   //alert("Booking Confirmed. Details have been mailed. ");
+			   console.log(JSON.stringify(response)); // if you're into that sorta thing
+			 });
+		
+			}	
+		  function sendbookingEmailToRider(email_,datetime,csource,cdistance)
+			{
+				$.ajax({
+					type: "POST",
+					url: "https://mandrillapp.com/api/1.0/messages/send.json",
+					data: {
+						'key': 'BLRIwwbepHVLvQ5NlUzYKw',
+						'message': {
+							'from_email': 'OnlineRideShare@gmail.com',
+				  'to': [
+					  {
+						'email': email_,
+						'name': 'RECIPIENT NAME (OPTIONAL)',
+						'type': 'to'
+					  },
+					 ],
+				  'autotext': 'true',
+				  'subject': 'A passenger has Booked',
+				  'html': 'A passenger '+localStorage.custEmail+' has booked your ride from '+ csource + ' to destination ' +cdistance+' has been booked on '+datetime 
+				}
+			  }
+			  }).done(function(response) {
+			   //alert("Booking Confirmed. Details have been mailed. ");
+			   console.log(JSON.stringify(response)); // if you're into that sorta thing
+			 });
+		
+			}	
+			
+		</script> 
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		
+		<script>
+
+		var jsonData;
+        var indx;
+        var ontheways = [];
+        var wayflag = 0;
+		function recjson(){
+			var myLoadedObj = JSON.parse(sendRideJson());
+			console.log(JSON.stringify(myLoadedObj));
+			var request = {
+                    origin: myLoadedObj.start,
+                    destination: end,
+					waypoints: wp,
+					optimizeWaypoints: true,
+					travelMode: google.maps.TravelMode.DRIVING
+                };
+		}
+        var riders=[];
+        function searchRide(){
+            var datetime=document.getElementById('datetime').value;
+            var hours = document.getElementById('hours').value;
+            if(datetime == ''){
+              alert('Please enter when do you need the ride');   
+            }
+            
+            var regData = {
+				"dateTime": datetime,
+                "hours":hours
+			}
+			
+			jsonData = JSON.stringify(regData);
+			console.log(jsonData);
+            var validroutes=[];
+            var request = $.ajax({
+                  url: 'http://localhost:8080/TestWs1/rest/riderservice/getrider',
+                  type: 'POST',
+                  data:jsonData,
+                  headers: { 
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json' 
+                  },
+                  dataType: 'json',
+                  success: function (response) {
+                   //complete: function (response) {
+                      if(response.length !=0 ){
+                          for(var idx in response){
+                            //delete response[idx].email;
+                            var x=JSON.stringify(response[idx]);
+                            console.log(x);
+                            response[idx].origin = response[idx].source;
+                            delete response[idx].source;
+                            availableroutes(response,idx);
+                            
+                            }
+                      }
+                      else{
+                          alert("SORRY, no rides found on your available time ");
+                      }
+                  }
+            }); 
+               
+        }//EOF searchRide
+            
+            
+        function goHome(){
+            delete localStorage.custEmail;
+            location.href='../index.html';
+        }
+        function loadEmail() {
+            //console.log(localStorage.custEmail);
+                if(typeof(Storage) !== "undefined") {
+                    document.getElementById("Email2").innerHTML = " "+ localStorage.custEmail;
+                } else {
+                    //document.getElementById("result").innerHTML = "Sorry, your browser does not support web storage...";
+                }
+            }
+        function loadMsg() {
+                if(typeof(Storage) !== "undefined") {
+                    document.getElementById("Msg").innerHTML = " No Rides Found for your Search ";
+                } 
+            }
+            
+		</script>
+        
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    
+
+    <body>
+        <div id="header"> 
+            <br><br>
+	    <table width=100%>
+			  <tr>
+			  <td>
+				<table>
+					<col width="15">
+					<col width="35">
+					<tr>
+						<td><p class="para">Source</p></td>
+						<td><input type="text" class="tb6" id="customerSource"></td>
+					</tr>
+					<tr>
+						<td><p class="para">Destination</p></td>
+						<td><input type="text" class="tb6" id="customerDestination"></td>
+					</tr>
+                    <tr>
+                        <td width=140px><p class="para">Date and Time</p></td>
+                        <td><input type="datetime-local" class="tb6" id="datetime" name="dtl" step="7200"></td>
+                        <td><p class="para">In range of</p></td>
+                        <td>
+                            <select id="hours">
+                              <option value=1>1</option>
+                              <option value=2>2</option>
+                              <option value=3>3</option>
+                              <option value=4>4</option>
+                            </select>
+                        </td>
+                        <td><p class="para">hour(s)</p></td>
+                    </tr>
+					<tr>
+                       <td></td>
+					   <td><input type="button" class="myButton" id="submit" value="Search Rides" onclick="searchRide()" />
+                           </td>
+                        <td><input type="button" class="myButton" id="reload" value="Reset" onclick="location.reload()" />
+                          </td>
+					</tr> 
+                    <tr  width=400px>
+                        <td></td>
+					   <td><span class="para" id="Distance"></td><td><span  class="para" id="Rate"></span></td>
+					</tr>
+				</table>
+				</td>
+				<a href="#">
+					<img id="alert" src="css/alert.png" height="50" width="50" alt="alert" class="thumbnails" />
+				</a>
+				<td>
+				
+                <tr>
+                <td></td>
+				<td><span class="para" id="Email2"></span></td>
+                <td>
+				    <input type="button" class="myButton" id="Activity" name="My Activity " value="My Activity" onclick="location.href = 'CustActivity.html';" />
+				    <input type="button" class="myButton" id="submit3" value="Logout" onclick="goHome()" />
+                </td>
+                </tr>
+            </tr>            
+		</table>
+            
+		</div>
+		
+    <div id="sec">
+        <div style="float:left; width:75%;" id="map" ></div>
+        <div style="float:right; width:25%;" id="sideSec">
+            <h2 class="para2">Available Rides</h2>
+            <table id="routebutton">
+					<col width="20">
+				    <tr>
+						<td><input type="button" class="myButton" height="50" left =50%  id="1" value="Route1" onclick="routemap(this.id)"/></td>
+				    </tr>
+				    <tr>
+						<td><input type="button" class="myButton" height ='150' id="2" value="Route2" onclick="routemap(this.id)"/></td>
+					</tr>
+					<tr>
+						<td><input height="200" class="myButton" height ='80' type="button" id="3" value="Route3" onclick="routemap(this.id)"/></td>
+				    </tr>
+				    <tr>
+						<td><input type="button" class="myButton" id="4" value="Route4" onclick="routemap(this.id)"/></td>
+					</tr>
+				    <tr>
+						<td><input type="button" class="myButton" id="5" value="Route5" onclick="routemap(this.id)"/></td>
+				    </tr>
+				    <tr>
+						<td><input type="button" class="myButton" id="6" value="Route6" onclick="routemap(this.id)"/></td>
+				    </tr>
+				</table>
+				</td>
+				<td>
+					<table id="dynamictable">
+					<col width="30%">
+					<tr><td><span class="para" id="Msg" iscon></span></td></tr>
+					<tr><td><span class="para" id="Name" iscon></span></td></tr>
+					<tr><td><span class="para" id="Email"></span></td></tr>
+					<tr><td><span class="para" id="DateTime"></span></td></tr>
+                    <tr><td><span class="para" id="Seat"></span></td></tr>
+					</table>
+				</td>
+                <td width=150px></td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="button" class="myButton" id="submit" value="BOOK" onclick="sendCustJson()" />
+                    </td>
+                    <td>&nbsp;&nbsp;&nbsp;
+                        <input type="button" class="myButton" id="submit3" value="Advance Book" onclick="sendCustJson2()" />
+                    </td>
+                    
+        </div>
+    </div>
+		
+    
+        <!-- load Map -->
+        <!--<script type="text/javascript" src="https://maps.google.com/maps/api/js?v=3&key=AIzaSyD_BAK5WjbhdgdHRoqJpegJ4badITzx2qc"></script> -->
+        
+        <!-- load Scripts -->
+		<script type="text/javascript" src ="CustomerJS/locatePos.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_BAK5WjbhdgdHRoqJpegJ4badITzx2qc&sensor=false&libraries=places,geometry"></script>
+        <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/routeboxer/src/RouteBoxer.js"></script>
+        <!--<script type="text/javascript" src ="CustomerJS/mapStyle.js"></script>--> 
+        <script type="text/javascript" src ="CustomerJS/mapOptions.js"></script> 	
+        <script type="text/javascript" src ="CustomerJS/scripts2.js"></script>
+		
+		<script>
+		$("#1").hide();
+		$("#2").hide();
+		$("#3").hide();
+		$("#4").hide();
+		$("#5").hide();
+		$("#6").hide();
+		</script>
+	</body>
+</html>
