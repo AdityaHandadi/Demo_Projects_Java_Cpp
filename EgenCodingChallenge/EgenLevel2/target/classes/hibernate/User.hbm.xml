@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    
+    <class name="com.model.User" table="usertab">
+        <id name="uuid" type="int">
+            <column name="uuid" length="11" not-null="true" unique="true" />
+        </id>
+        <property name="firstName" type="string">
+            <column name="firstname" length="45" not-null="false" unique="false" />
+        </property>
+        <property name="middleName" type="string">
+            <column name="middlename" length="45" not-null="false" unique="false" />
+        </property>
+        <property name="lastName" type="string">
+            <column name="lastname" length="45" not-null="false" unique="false" />
+        </property>
+        <property name="age" type="int">
+            <column name="age" not-null="false" unique="false" />
+        </property>
+        <property name="gender" type="java.lang.Character">
+            <column name="gender" length="1" not-null="false" unique="false" />
+        </property>
+        <property name="phoneNumber" type="java.lang.Long">
+            <column name="phone" length="10" not-null="false" unique="false" />
+        </property>
+        <property name="zip" type="string">
+            <column name="zip" length="45" not-null="false" unique="false" />
+        </property>
+    </class>
+</hibernate-mapping>

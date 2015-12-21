@@ -1,0 +1,17 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+   
+   <!--  User business Object -->
+   <bean id="userBo" class="com.bo.impl.UserBoImpl" >
+   		<property name="userDao" ref="userDao" />
+   </bean>
+   
+   <!-- User Data Access Object -->
+   <bean id="userDao" class="com.dao.impl.UserDaoImpl" >
+   		<property name="sessionFactory" ref="sessionFactory"></property>
+   </bean>
+   
+   		
+</beans>
